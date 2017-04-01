@@ -3,7 +3,11 @@ package com.lxl.clac;
 public class App {
 	public static void main(String[] args) {
 		
-		CalcFrame calcFrame = new CalcFrame();
+		//Ä£ÐÍ
+		CalcModel calcModel = new CalcModel();
+		
+		//ÊÓÍ¼
+		CalcFrame calcFrame = new CalcFrame(calcModel);
 		
 	}
 
