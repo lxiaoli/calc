@@ -1,20 +1,16 @@
 package com.lxl.clac;
 
 /**
- * »Øµ÷½Ó¿Ú
+ * å›è°ƒæ¥å£
  * @author lxl
  *
  */
 public interface CalcCallback {
 	
 	/**
-	 * ÏÔÊ¾°´Å¥µÄ½á¹û
+	 * æ˜¾ç¤ºè®¡ç®—çš„ç»“æœ
 	 */
-	void showResult();
-	
-	/**
-	 * ÏÔÊ¾°´Å¥µÄÊäÈë
-	 */
-	void showInput();
+	void showResult(String result);
+
 
 }

@@ -3,6 +3,8 @@ package com.lxl.clac;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,82 +14,103 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 /**
- * ¼ÆËãÆ÷µÄÊÓÍ¼
+ * è®¡ç®—å™¨çš„è§†å›¾ï¼Œå®ç°è§‚å¯Ÿè€…
  * 
  * @author lxl
  *
  */
-public class CalcFrame extends JFrame implements CalcCallback{
-
-	private JLabel labelResult;
-
-	String[] title = { "", "", "Del", "C", "7", "8", "9", "/", "4", "5", "6",
-			"%", "1", "2", "3", "*", "0", "+", "-", "=" };
+public class CalcFrame extends JFrame implements Observer,CalcCallback{
+	
+	private static final long serialVersionUID = 1L;
 
 	/**
-	 * °´Å¥
+	 * æ˜¾ç¤ºè®¡ç®—ç»“æœ
+	 */
+	private JLabel labelResult;
+	
+
+	String[] title = { "", "", "", "C", "7", "8", "9", "/", "4", "5", "6", "%",
+			"1", "2", "3", "*", "0", "+", "-", "=" };
+
+	/**
+	 * æŒ‰é’®
 	 */
 	private JButton[] buttons = new JButton[title.length];
-	
-	//°´Å¥µÄ¼àÌıÆ÷
-	private ButtonListener buttonListener;
-	
-	//Ä£ĞÍ
-	private CalcModel calcModel;
 
-	public CalcFrame(CalcModel calcModel) {
-		buttonListener = new ButtonListener(calcModel,this);
-		this.calcModel = calcModel;
+	// æŒ‰é’®çš„ç›‘å¬å™¨
+	private Controller controller = null;
+
+//	/**
+//	 * è®¾ç½®æ–¹æ³•ï¼ˆæ³¨å…¥ï¼‰è§†å›¾æ‰€éœ€çš„æ§åˆ¶å™¨
+//	 * 
+//	 * @param controller
+//	 */
+//	public void setController(Controller controller) {
+//		this.controller = controller;
+//
+//	}
+
+	public CalcFrame(Controller controller) {
+		this.controller = controller;
 		initui();
 		setVisible(true);
 	}
 
 	private void initui() {
-		setTitle("¼ÆËãÆ÷");
+		setTitle("è®¡ç®—å™¨");
 		setSize(320, 480);
-		setResizable(false);
+		setResizable(true);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		// Ìí¼Ó½á¹û±êÇ©
+		// æ·»åŠ ç»“æœæ ‡ç­¾
 		labelResult = new JLabel("0.0");
 		labelResult.setBorder(new EmptyBorder(20, 10, 20, 10));
 		labelResult.setHorizontalAlignment(SwingConstants.RIGHT);
-		labelResult.setFont(new Font("Î¢ÈíÑÅÌå", Font.PLAIN, 32));
+		labelResult.setFont(new Font("å¾®è½¯é›…ä½“", Font.PLAIN, 32));
 		add(labelResult, BorderLayout.NORTH);
 
-		// Ìí¼Ó°´Å¥
-		// °´Å¥Ãæ°å
+		// æ·»åŠ æŒ‰é’®
+		// æŒ‰é’®é¢æ¿
 		JPanel buttonPanel = new JPanel();
-		// ÉèÖÃ²¼¾Ö
+		// è®¾ç½®å¸ƒå±€
 		buttonPanel.setLayout(new GridLayout(5, 4, 5, 5));
-		// °´Å¥Ãæ°åÌí¼Óµ½´°¿ÚÖĞ¼ä
+		// æŒ‰é’®é¢æ¿æ·»åŠ åˆ°çª—å£ä¸­é—´
 		add(buttonPanel, BorderLayout.CENTER);
 
 		for (int i = 0; i < title.length; i++) {
 			if (title[i].length() == 0) {
-				// ²»ÏÔÊ¾ÄÚÈİµÄ±êÇ©
-				buttonPanel.add(new JPanel());
+				// ä¸æ˜¾ç¤ºå†…å®¹çš„æ ‡ç­¾
+				buttonPanel.add(new JLabel(""));
 			} else {
-				// °´Å¥
+				// æŒ‰é’®
 				buttons[i] = new JButton(title[i]);
 				buttons[i].setActionCommand(title[i]);
-				//Ìí¼Ó¼àÌıÆ÷
-				buttons[i].addActionListener(buttonListener);
+				// æ·»åŠ æŒ‰é’®çš„ç‚¹å‡»ç›‘å¬å™¨
+				buttons[i].addActionListener(controller);
 				buttonPanel.add(buttons[i]);
 			}
 
 		}
 	}
 
+
+	/**
+	 * æ¨¡å‹æ›´æ–°è§†å›¾(å›è°ƒ)
+	 */
 	@Override
-	public void showResult() {
+	public void update(Observable o, Object arg) {
+		String result = (String) arg;
+		labelResult.setText(result);
 		
 	}
 
+	/**
+	 * 
+	 */
 	@Override
-	public void showInput() {
-		labelResult.setText(calcModel.getResult());
+	public void showResult(String result) {
+//		labelResult.setText(result);
+		
 	}
-
 }

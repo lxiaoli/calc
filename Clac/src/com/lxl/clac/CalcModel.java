@@ -1,24 +1,35 @@
 package com.lxl.clac;
 
+import java.util.Observable;
 import java.util.Stack;
 
 /**
- * ¼ÆËãÆ÷µÄÄ£ĞÍ(Model)
+ * è®¡ç®—å™¨çš„æ¨¡å‹(Model)
+ * 
+ * æ¨¡å‹ä¸­çš„æ•°æ®å‘å¸ƒå‡ºå»ï¼ˆæˆä¸ºè¢«è®¢é˜…çš„ä¸»é¢˜ã€è¢«è§‚å¯Ÿçš„å¯¹è±¡æˆ–è€…æ•°æ®ï¼‰
+ * 
  * @author lxl
  *
  */
-public class CalcModel {
+public class CalcModel extends Observable{
 	
-	//Äæ²¨À¼±í´ïÊ½£¨ºóĞò±í´ïÊ½)
+	private String input;
 	
-	//²Ù×÷ÊıºÍÔËËã·û
+	//é€†æ³¢å…°è¡¨è¾¾å¼ï¼ˆååºè¡¨è¾¾å¼)
+	//æ“ä½œæ•°å’Œè¿ç®—ç¬¦
 	private Stack<String> stack;
 	
+	private CalcCallback callback;
+	
+	public void setCallback(CalcCallback callback) {
+		this.callback = callback;
+	}
+	
 	/**
-	 * ¼ÆËãÆ÷
+	 * è®¡ç®—å™¨
 	 */
 	public CalcModel() {
-		stack = new Stack<String>();
+		stack = new Stack<>();
 	}
 	
 	public String getResult(){
@@ -31,13 +42,29 @@ public class CalcModel {
 	public void push(String e){
 		stack.push(e);
 		System.out.println(stack);
+		
+		//è®¾ç½®æ”¹å˜é€šçŸ¥è§‚å¯Ÿè€…
+		setChanged();
+		notifyObservers(stack.toString());
+		callback.showResult(stack.toString());
 	}
 	
 	/**
-	 * Çå¿Õ
+	 * æ¸…ç©º
 	 */
 	public void clear(){
 		stack.clear();
+		//é€šçŸ¥
+		setChanged();
+		notifyObservers();
 	}
+	public void setInput(String input){
+		this.input = input;
+		
+		//é€šçŸ¥è§†å›¾æ›´æ–°
+		setChanged();
+		notifyObservers(input);
+	}
+	
 
 }
