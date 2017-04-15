@@ -41,7 +41,6 @@ public class CalcModel extends Observable{
 	 */
 	public void push(String e){
 		stack.push(e);
-		System.out.println(stack);
 		
 		//设置改变通知观察者
 		setChanged();
@@ -56,7 +55,7 @@ public class CalcModel extends Observable{
 		stack.clear();
 		//通知
 		setChanged();
-		notifyObservers();
+		notifyObservers("0.0");
 	}
 	public void setInput(String input){
 		this.input = input;

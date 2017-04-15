@@ -3,6 +3,8 @@ package com.lxl.clac;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JLabel;
 
@@ -18,6 +20,7 @@ public class Controller implements ActionListener{
 	 */
 	private CalcModel calcModel;
 	private CalcFrame frame;
+	private JLabel labelResult;
 	
 	private StringBuilder input = new StringBuilder();
 	
@@ -49,24 +52,35 @@ public class Controller implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		
 		String command = e.getActionCommand();
-		System.out.println(command);
+//		System.out.println(command);
 		
 		switch(command){
-		case "+":
-		case "-":
-		case "*":
-		case "/":
+		case "←":
+			String text;
+			if(!input.toString().equals("0.0")){
+				text = input.toString();
+				text = text.substring(0, text.length()-1);
+				input.setLength(0);
+				input.append(text);
+				calcModel.setInput(input.toString());
+			}
+			break;
 		case "C":
 			calcModel.clear();
 			input.setLength(0);
 			break;
 		case "=":
 			calcModel.setInput(input.toString());
+			text = input.toString();
+			calculate c = new calculate(text);
 			input.setLength(0);
+			input.append(c.getNumStack());
+			calcModel.setInput(input.toString());
 			break;
 		default:
 			input.append(command);
 			calcModel.setInput(input.toString());
+			
 		}
 		
 	}

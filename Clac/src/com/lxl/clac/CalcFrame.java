@@ -19,18 +19,18 @@ import javax.swing.border.EmptyBorder;
  * @author lxl
  *
  */
-public class CalcFrame extends JFrame implements Observer,CalcCallback{
-	
+public class CalcFrame extends JFrame implements Observer, CalcCallback {
+
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 显示计算结果
 	 */
 	private JLabel labelResult;
-	
 
-	String[] title = { "", "", "", "C", "7", "8", "9", "/", "4", "5", "6", "%",
-			"1", "2", "3", "*", "0", "+", "-", "=" };
+	String[] title = { "!", "^", "√", "π", "C", "sin", "(", ")", "e", "←",
+			"cos", "7", "8", "9", "÷", "tan", "4", "5", "6", "×", "ln", "1",
+			"2", "3", "-","log", "0", ".", "=", "+" };
 
 	/**
 	 * 按钮
@@ -40,15 +40,15 @@ public class CalcFrame extends JFrame implements Observer,CalcCallback{
 	// 按钮的监听器
 	private Controller controller = null;
 
-//	/**
-//	 * 设置方法（注入）视图所需的控制器
-//	 * 
-//	 * @param controller
-//	 */
-//	public void setController(Controller controller) {
-//		this.controller = controller;
-//
-//	}
+	// /**
+	// * 设置方法（注入）视图所需的控制器
+	// *
+	// * @param controller
+	// */
+	// public void setController(Controller controller) {
+	// this.controller = controller;
+	//
+	// }
 
 	public CalcFrame(Controller controller) {
 		this.controller = controller;
@@ -59,7 +59,7 @@ public class CalcFrame extends JFrame implements Observer,CalcCallback{
 	private void initui() {
 		setTitle("计算器");
 		setSize(320, 480);
-		setResizable(true);
+		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -74,7 +74,7 @@ public class CalcFrame extends JFrame implements Observer,CalcCallback{
 		// 按钮面板
 		JPanel buttonPanel = new JPanel();
 		// 设置布局
-		buttonPanel.setLayout(new GridLayout(5, 4, 5, 5));
+		buttonPanel.setLayout(new GridLayout(6, 6, 5, 5));
 		// 按钮面板添加到窗口中间
 		add(buttonPanel, BorderLayout.CENTER);
 
@@ -86,14 +86,15 @@ public class CalcFrame extends JFrame implements Observer,CalcCallback{
 				// 按钮
 				buttons[i] = new JButton(title[i]);
 				buttons[i].setActionCommand(title[i]);
+				// System.out.println(buttons[i].getSize());
 				// 添加按钮的点击监听器
 				buttons[i].addActionListener(controller);
 				buttonPanel.add(buttons[i]);
+
 			}
 
 		}
 	}
-
 
 	/**
 	 * 模型更新视图(回调)
@@ -102,7 +103,6 @@ public class CalcFrame extends JFrame implements Observer,CalcCallback{
 	public void update(Observable o, Object arg) {
 		String result = (String) arg;
 		labelResult.setText(result);
-		
 	}
 
 	/**
@@ -110,7 +110,6 @@ public class CalcFrame extends JFrame implements Observer,CalcCallback{
 	 */
 	@Override
 	public void showResult(String result) {
-//		labelResult.setText(result);
-		
+		// result = labelResult.getText();
 	}
 }
